@@ -1,0 +1,26 @@
+with tbl_num_challenges as(
+
+    select 
+        h.hacker_id , h.name , count(c.challenge_id) as no_challenges
+    from hackers as h
+    join challenges as c 
+    on  c.hacker_id = h.hacker_id
+    group by h.hacker_id , h.name
+    
+),tbl_count_challenges as( 
+select 
+    no_challenges , count(*) as count_challenges
+from tbl_num_challenges
+group by no_challenges
+    )
+    
+select 
+    t1.hacker_id , t1.name ,t1.no_challenges 
+from tbl_num_challenges as t1
+join tbl_count_challenges as t2 on t1.no_challenges=t2.no_challenges
+where
+    t2.count_challenges<=1
+or
+    t1.no_challenges=(select max(no_challenges) from tbl_num_challenges)
+order by 
+    t1.no_challenges desc , t1.hacker_id ;
