@@ -1,0 +1,22 @@
+-- non_evil=0 , min coin_needed for each code with same power
+
+with tbl_coins_needed as(
+select 
+    row_number() over(partition by code , power order by coins_needed) as RowNum,
+    id ,
+    code, 
+    coins_needed ,
+    power 
+from wands )
+
+select 
+    id, 
+    age , 
+    coins_needed , 
+    power
+from wands_property as wp
+join tbl_coins_needed as tcn on tcn.code = wp.code and RowNum = 1
+where is_evil=0
+order by power desc , age desc
+;
+
