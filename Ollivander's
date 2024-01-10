@@ -15,8 +15,8 @@ select
     coins_needed , 
     power
 from wands_property as wp
-join tbl_coins_needed as tcn on tcn.code = wp.code and RowNum = 1
-where is_evil=0
+join tbl_coins_needed as tcn on tcn.code = wp.code 
+where is_evil=0 and RowNum = 1
 order by power desc , age desc
 ;
 
